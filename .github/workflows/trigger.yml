@@ -1,0 +1,21 @@
+name: Trigger Workflow
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run some initial task
+        run: echo "Initial workflow is running..."
+      
+      - name: Trigger second workflow
+        uses: the-actions-org/workflow-dispatch@v4
+        with:
+          workflow: Second Workflow  # Name of the workflow to trigger
+          token: ${{ secrets.PAT_TOKEN }}  # You'll need to create this secret
+          ref: ${{ github.ref }}  # This will use the same branch as the current workflow
