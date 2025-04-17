@@ -18,4 +18,4 @@ jobs:
         with:
           workflow: Second Workflow  # Name of the workflow to trigger
           token: ${{ secrets.PAT_TOKEN }}  # You'll need to create this secret
-          ref: ${{ github.ref }}  # This will use the same branch as the current workflow
+          ref: ${{ github.ref }}  # Use the current branch as the ref
