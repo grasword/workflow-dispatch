@@ -14,8 +14,8 @@ jobs:
         run: echo "Initial workflow is running..."
       
       - name: Trigger second workflow
-        uses: the-actions-org/workflow-dispatch@v4
+        uses: peter-evans/repository-dispatch@v2
         with:
-          workflow: Second Workflow  # Name of the workflow to trigger
-          token: ${{ secrets.PAT_TOKEN }}  # You'll need to create this secret
-          ref: ${{ github.ref }}  # Use the current branch as the ref
+          token: ${{ secrets.PAT_TOKEN }}
+          event-type: pr-build
+          client-payload: '{"ref": "${{ github.ref }}", "pr_number": "${{ github.event.pull_request.number }}"}'
