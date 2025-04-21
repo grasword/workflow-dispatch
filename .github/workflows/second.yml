@@ -1,4 +1,5 @@
 name: Second Workflow
+
 on:
   repository_dispatch:
     types: [pr-build]
@@ -7,10 +8,36 @@ jobs:
   process:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR
+      - name: Checkout PR code
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.client_payload.ref }}
-      
-      - name: Run second workflow task
-        run: echo "Second workflow has been triggered successfully!"
+
+      - name: Simulate some task
+        run: echo "Second workflow task running..."
+
+      - name: ✅ Set status success
+        if: success()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.event.client_payload.sha }} \
+            -d '{
+              "state": "success",
+              "context": "custom/pr-build-status",
+              "description": "Second workflow completed successfully"
+            }'
+
+      - name: ❌ Set status failure
+        if: failure()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.event.client_payload.sha }} \
+            -d '{
+              "state": "failure",
+              "context": "custom/pr-build-status",
+              "description": "Second workflow failed"
+            }'

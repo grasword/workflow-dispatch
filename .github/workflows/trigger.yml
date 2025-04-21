@@ -18,4 +18,8 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           event-type: pr-build
-          client-payload: '{"ref": "${{ github.ref }}", "pr_number": "${{ github.event.pull_request.number }}"}'
+          client-payload: >-
+            {
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}"
+            }
