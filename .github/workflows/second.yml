@@ -16,6 +16,10 @@ jobs:
       - name: Simulate some task
         run: echo "Second workflow task running..."
 
+      - name: ❌ Force failure (for testing)
+        run: exit 1
+
+
       - name: ✅ Set status success
         if: success()
         run: |
